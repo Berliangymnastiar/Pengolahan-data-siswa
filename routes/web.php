@@ -16,4 +16,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'PagesController@home'); 
 
 //Controller students
-Route::resource('/students', 'StudentsController');
+Route::resource('students', 'StudentsController');

@@ -5,6 +5,21 @@
 @section('container')
     <div class="container mt-5">
         <div class="row">
+            <div class="col">
+            <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
+                    Add Students
+            </button>
+            </div>
+        </div>
+            <div class="row mt-3">
+                @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                @endif
+            </div>    
+        <div class="row mt-3">
+            <div class="col">
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -20,7 +35,7 @@
                 <tbody>
                     @foreach ($student as $student)
                     <tr>
-                        <th>1</th>
+                    <th>{{$loop->iteration}}</th>
                         <td>{{ $student->nama }}</td>
                         <td>{{ $student->nis }}</td>
                         <td>{{ $student->kelas }}</td>
@@ -32,5 +47,72 @@
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            <form action="/students/create" method="get">
+                @csrf
+                @method('post')
+                <div class="form-group">
+                    <label for="nama">Nama</label>
+                    <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama">
+                    @error('nama')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="nis">NIS</label>
+                    <input type="text" class="form-control @error('nis') is-invalid @enderror" id="nis" name="nis">
+                    @error('nis')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="kelas">Kelas</label>
+                    <input type="text" class="form-control @error('kelas') is-invalid @enderror" id="kelas" name="kelas">
+                    @error('kelas')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="jenis_kelamin">Jenis kelamin</label>
+                    <select class="form-control" id="jenis_kelamin" name="jenis_kelamin">
+                        <option>L</option>
+                        <option>P</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="agama">Agama</label>
+                    <input type="text" class="form-control @error('agama') is-invalid @enderror" id="agama" name="agama">
+                    @error('agama')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="alamat">Alamat</label>
+                    <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" rows="3"></textarea>
+                    @error('alamat')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </form>
+    </div>
     </div>
 @endsection

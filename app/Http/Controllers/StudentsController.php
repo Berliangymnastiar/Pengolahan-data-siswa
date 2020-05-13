@@ -23,9 +23,18 @@ class StudentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $request->validate([
+            'nama' => 'required',
+            'nis'  => 'required|size:5',
+            'kelas' => 'required',
+            'jenis_kelamin' => '',
+            'agama' => 'required',
+            'alamat' => 'required',
+        ]);
+        Student::create($request->all());
+        return redirect('/students')->with('status', 'Data siswa berhasil ditambahkan');
     }
 
     /**
