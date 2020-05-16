@@ -17,3 +17,4 @@ Route::get('/', 'PagesController@home');
 
 //Controller students
 Route::resource('students', 'StudentsController');
+Route::post('/students{student}/update', 'StudentsController@update');

@@ -3,7 +3,23 @@
 @section('title', 'Students')
     
 @section('container')
-    <div class="container mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-5 my-3">
+                <form action="/students" method="get">
+                    <div class="input-group mb-3 float-right">
+                        <input type="text" class="form-control" placeholder="search student" name="search">
+                        <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">Seacrh</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="container">
         <div class="row">
             <div class="col">
             <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal">
@@ -30,10 +46,11 @@
                         <th scope="col">Jenis Kelamin</th>
                         <th scope="col">Agama</th>
                         <th scope="col">Alamat</th>
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($student as $student)
+                    @foreach ($students as $student)
                     <tr>
                     <th>{{$loop->iteration}}</th>
                         <td>{{ $student->nama }}</td>
@@ -42,6 +59,15 @@
                         <td>{{ $student->jenis_kelamin }}</td>
                         <td>{{ $student->agama }}</td>
                         <td>{{ $student->alamat }}</td>
+                        <td>
+                        <a href="/students/{{$student->id}}/edit" class="btn btn-success">Edit</a>
+
+                        <form action="/students/{{$student->id}}" method="post" class="d-inline">
+                            @method('delete')
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Delete</button>    
+                        </form>
+                        </td>
                     </tr>    
                     @endforeach
                 </tbody>

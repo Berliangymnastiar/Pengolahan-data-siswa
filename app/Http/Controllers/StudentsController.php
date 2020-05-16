@@ -12,10 +12,14 @@ class StudentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $student = Student::all();
-        return view('students.index', ['student' => $student]);
+        if($request->has('search')) {
+            $students = Student::where('nama', 'LIKE', '%'. $request->search .'%')->get();
+        } else {
+            $students = Student::all();
+        }
+        return view('students.index', ['students' => $students]);
     }
 
     /**
@@ -27,7 +31,7 @@ class StudentsController extends Controller
     {
         $request->validate([
             'nama' => 'required',
-            'nis'  => 'required|size:5',
+            'nis' => 'required}size:5',
             'kelas' => 'required',
             'jenis_kelamin' => '',
             'agama' => 'required',
@@ -67,7 +71,7 @@ class StudentsController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        return view('students.edit', ['student' => $student]);
     }
 
     /**
@@ -79,7 +83,16 @@ class StudentsController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
+        Student::where('id', $student->id)
+                ->update([
+                    'nama' => $request->nama,
+                    'nis' => $request->nis,
+                    'kelas' => $request->kelas,
+                    'jenis_kelamin' => $request->jenis_kelamin,
+                    'agama' => $request->agama,
+                    'alamat' => $request->alamat
+                ]);
+                return redirect('/students')->with('status','Data siswa berhasil diubah');
     }
 
     /**
@@ -90,6 +103,7 @@ class StudentsController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+        Student::destroy($student->id);
+        return redirect('/students')->with('status','Data siswa berhasil dihapus');
     }
 }
