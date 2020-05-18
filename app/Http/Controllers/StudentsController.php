@@ -31,7 +31,7 @@ class StudentsController extends Controller
     {
         $request->validate([
             'nama' => 'required',
-            'nis' => 'required}size:5',
+            'nis' => 'required|size:5',
             'kelas' => 'required',
             'jenis_kelamin' => '',
             'agama' => 'required',
