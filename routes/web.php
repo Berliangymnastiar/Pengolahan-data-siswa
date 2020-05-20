@@ -13,9 +13,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'PagesController@home'); 
+Route::get('/', 'PagesController@home');
 
-//Controller students
-Route::resource('students', 'StudentsController');
-Route::post('/students{student}/update', 'StudentsController@update');
-Route::get('/students/{student}/delete', 'StudentsController@destroy');
+
+
+Route::get('/login', 'AuthController@login')->name('login');
+Route::post('/postLogin', 'AuthController@postLogin');
+//Controller Logout
+Route::get('/logout', 'AuthController@logout'); 
+
+
+
+Route::group(['middleware' => 'auth'], function () {
+    //Controller dashboards
+    Route::get('/dashboards', 'DashboardsController@index')->middleware('auth');
+    //Controller students
+    Route::resource('students', 'StudentsController')->middleware('auth');
+    Route::post('/students{student}/update', 'StudentsController@update')->middleware('auth');
+    Route::get('/students/{student}/delete', 'StudentsController@destroy')->middleware('auth');
+});
+
+
