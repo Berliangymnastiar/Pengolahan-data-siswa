@@ -60,7 +60,7 @@ class StudentsController extends Controller
      */
     public function show(Student $student)
     {
-        //
+        return view('students.show', ['student' => $student]);
     }
 
     /**
@@ -83,6 +83,10 @@ class StudentsController extends Controller
      */
     public function update(Request $request, Student $student)
     {
+        // dd($request->all());
+        $request->validate([
+            'picture' => 'max:500'
+        ]);
         Student::where('id', $student->id)
                 ->update([
                     'nama' => $request->nama,
@@ -90,9 +94,15 @@ class StudentsController extends Controller
                     'kelas' => $request->kelas,
                     'jenis_kelamin' => $request->jenis_kelamin,
                     'agama' => $request->agama,
-                    'alamat' => $request->alamat
+                    'alamat' => $request->alamat,
+                    'picture' => $request->picture
                 ]);
-                return redirect('/students')->with('status','Data siswa berhasil diubah');
+            if($request->hasFile('picture')){
+                $request->file('picture')->move('images/', $request->file('picture')->getClientOriginalName());
+                $student->picture = $request->file('picture')->getClientOriginalName();
+                $student->save();
+            }
+        return redirect('/students')->with('status','Data siswa berhasil diubah');
     }
 
     /**

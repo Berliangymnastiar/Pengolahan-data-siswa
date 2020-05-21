@@ -6,5 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    protected $fillable = ['nama', 'nis', 'kelas', 'jenis_kelamin', 'agama', 'alamat'];
+    protected $fillable = ['nama', 'nis', 'kelas', 'jenis_kelamin', 'agama', 'alamat', 'picture'];
+
+    public function getPicture() 
+    { 
+        if(!$this->picture) {
+            return asset('images/default.png');
+        } else {
+            return asset('images/' . $this->picture );
+        }
+        
+    }
 }
+

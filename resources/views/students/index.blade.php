@@ -43,7 +43,7 @@
                                             @foreach ($students as $student)
                                             <tr>
                                             <th>{{$loop->iteration}}</th>
-                                                <td>{{ $student->nama }}</td>
+                                                <td><a href="students/{{ $student->id }}"> {{ $student->nama }}</td></a>
                                                 <td>{{ $student->nis }}</td>
                                                 <td>{{ $student->kelas }}</td>
                                                 <td>{{ $student->jenis_kelamin }}</td>
