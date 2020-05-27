@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    protected $fillable = ['nama', 'nis', 'kelas', 'jenis_kelamin', 'agama', 'alamat', 'picture'];
+    protected $fillable = ['nama', 'nis', 'kelas', 'jenis_kelamin', 'agama', 'alamat', 'picture', 'email', 'user_id', 'role'];
 
     public function getPicture() 
     { 

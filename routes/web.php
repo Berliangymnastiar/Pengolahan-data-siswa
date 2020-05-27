@@ -24,13 +24,14 @@ Route::get('/logout', 'AuthController@logout');
 
 
 
-Route::group(['middleware' => 'auth'], function () {
-    //Controller dashboards
-    Route::get('/dashboards', 'DashboardsController@index')->middleware('auth');
+Route::group(['middleware' => ['auth', 'checkRole:admin']], function () {
     //Controller students
     Route::resource('students', 'StudentsController')->middleware('auth');
     Route::post('/students{student}/update', 'StudentsController@update')->middleware('auth');
     Route::get('/students/{student}/delete', 'StudentsController@destroy')->middleware('auth');
 });
 
-
+Route::group(['middleware' => ['auth', 'checkRole:admin,siswa']], function () {
+     //Controller dashboards
+    Route::get('/dashboards', 'DashboardsController@index');
+});

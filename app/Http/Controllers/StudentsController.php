@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Student;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Student;
+use App\User;
+
+
+
 
 class StudentsController extends Controller
 {
@@ -29,15 +33,29 @@ class StudentsController extends Controller
      */
     public function create(Request $request)
     {
-        $request->validate([
-            'nama' => 'required',
-            'nis' => 'required|size:5',
-            'kelas' => 'required',
-            'jenis_kelamin' => '',
-            'agama' => 'required',
-            'alamat' => 'required',
-        ]);
-        Student::create($request->all());
+        //form validation
+        // $request->validate([
+        //     'nama' => 'required',
+        //     'email' => 'required|email',
+        //     'nis' => 'required|size:5',
+        //     'kelas' => 'required',
+        //     'jenis_kelamin' => '',
+        //     'agama' => 'required',
+        //     'alamat' => 'required',
+        // ]);
+
+        //inset tabel user
+        $user = new \App\User;
+        $user->role = 'siswa';
+        $user->name = $request->nama;
+        $user->email = $request->email;
+        $user->password = bcrypt('rahasia');
+        $user->remember_token = Str::random(40);
+        $user->save();
+
+        //Insert tabel students
+        $request->request->add(['user_id' => $user->id]);
+        $student = \App\Student::create($request->all());    
         return redirect('/students')->with('status', 'Data siswa berhasil ditambahkan');
     }
 

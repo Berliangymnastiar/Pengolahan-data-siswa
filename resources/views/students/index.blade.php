@@ -86,6 +86,13 @@
                                             @enderror
                                         </div>
                                         <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email">
+                                            @error('email')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
                                             <label for="nis">NIS</label>
                                             <input type="text" class="form-control @error('nis') is-invalid @enderror" id="nis" name="nis">
                                             @error('nis')
