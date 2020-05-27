@@ -5,6 +5,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Student;
 use App\User;
+use App\Mapel;
 
 
 

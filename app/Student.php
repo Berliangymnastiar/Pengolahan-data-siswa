@@ -15,7 +15,12 @@ class Student extends Model
         } else {
             return asset('images/' . $this->picture );
         }
-        
     }
+
+    public function mapel()
+    {
+        return $this->belongsToMany(Mapel::class)->withPivot(['nilai']);
+    }
+
 }
 
