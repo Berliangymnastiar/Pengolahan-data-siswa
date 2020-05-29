@@ -52,11 +52,7 @@
                                                 <td>
                                                 <a href="/students/{{$student->id}}/edit" class="btn btn-success btn-sm">Edit</a>
                         
-                                                {{-- <form action="/students/{{$student->id}}" method="post" class="d-inline">
-                                                    @method('delete')
-                                                    @csrf --}}
-                                                <a href="/students/{{$student->id}}/delete" class="btn btn-danger btn-sm" onclick="return confirm('Yakin?')">Delete</a>    
-                                                {{-- </form> --}}
+                                                <a href="/students/{{$student->id}}/delete" class="btn btn-danger btn-sm" onclick="return confirm('Yakin?')">Delete</a>
                                                 </td>
                                             </tr>    
                                             @endforeach
@@ -71,70 +67,68 @@
                                     <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
                                     </button>
                                     </div>
                                     <div class="modal-body">
-                                    <form action="/students/create" method="get">
-                                        @csrf
+                                    <form action="/students/create" class="d-inline" method="get" enctype="multipart/form-data">
                                         @method('post')
-                                        <div class="form-group">
+                                        @csrf
+                                        <div class="form-group {{ $errors->has('nama') ? 'has-error' : ''}}">
                                             <label for="nama">Nama</label>
-                                            <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama">
-                                            @error('nama')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            <input type="text" class="form-control" id="nama" name="nama" value="{{ old('nama') }}">
+                                            @if($errors->has('nama'))
+                                                <span class="help-block">{{ $errors->first('nama') }}</span>
+                                            @endif
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group {{ $errors->has('email') ? 'has-error' : ''}}">
                                             <label for="email">Email</label>
-                                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email">
-                                            @error('email')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                                            @if($errors->has('email'))
+                                                <span class="help-block">{{ $errors->first('email') }}</span>
+                                            @endif
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group {{ $errors->has('nis') ? 'has-error' : ''}}">
                                             <label for="nis">NIS</label>
-                                            <input type="text" class="form-control @error('nis') is-invalid @enderror" id="nis" name="nis">
-                                            @error('nis')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            <input type="text" class="form-control @error('nis') is-invalid @enderror" id="nis" name="nis" value="{{ old('nis') }}">
+                                            @if($errors->has('nis'))
+                                                <span class="help-block">{{ $errors->first('nis') }}</span>
+                                            @endif
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group {{ $errors->has('kelas') ? 'has-error' : ''}}">
                                             <label for="kelas">Kelas</label>
-                                            <input type="text" class="form-control @error('kelas') is-invalid @enderror" id="kelas" name="kelas">
-                                            @error('kelas')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            <input type="text" class="form-control @error('kelas') is-invalid @enderror" id="kelas" name="kelas" value="{{ old('kelas') }}">
+                                            @if($errors->has('kelas'))
+                                                <span class="help-block">{{ $errors->first('kelas') }}</span>
+                                            @endif
                                         </div>
                                         <div class="form-group">
                                             <label for="jenis_kelamin">Jenis kelamin</label>
                                             <select class="form-control" id="jenis_kelamin" name="jenis_kelamin">
-                                                <option>L</option>
-                                                <option>P</option>
+                                                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>L</option>
+                                                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>P</option>
                                             </select>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group {{ $errors->has('agama') ? 'has-error' : ''}}">
                                             <label for="agama">Agama</label>
                                             <input type="text" class="form-control @error('agama') is-invalid @enderror" id="agama" name="agama">
-                                            @error('agama')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            @if($errors->has('agama'))
+                                                <span class="help-block">{{ $errors->first('agama') }}</span>
+                                            @endif
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group {{ $errors->has('alamat') ? 'has-error' : ''}}">
                                             <label for="alamat">Alamat</label>
-                                            <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" rows="3"></textarea>
-                                            @error('alamat')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" rows="3">{{ old('alamat') }}</textarea>
+                                            @if($errors->has('alamat'))
+                                                <span class="help-block">{{ $errors->first('alamat') }}</span>
+                                            @endif
                                         </div>
-                                    
-                                    </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Add</button>
                                     </div>
+                                </form>
                                 </div>
-                            </form>
+                                </div>
                             </div>
                             </div>
     @endsection

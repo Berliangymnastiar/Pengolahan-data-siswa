@@ -7,9 +7,6 @@ use App\Student;
 use App\User;
 use App\Mapel;
 
-
-
-
 class StudentsController extends Controller
 {
     /**
@@ -35,15 +32,14 @@ class StudentsController extends Controller
     public function create(Request $request)
     {
         //form validation
-        // $request->validate([
-        //     'nama' => 'required',
-        //     'email' => 'required|email',
-        //     'nis' => 'required|size:5',
-        //     'kelas' => 'required',
-        //     'jenis_kelamin' => '',
-        //     'agama' => 'required',
-        //     'alamat' => 'required',
-        // ]);
+        $request->validate([
+            'nama' => 'required',
+            'email' => 'required|email|unique:students',
+            'nis' => 'required|size:5|unique:students|min:5',
+            'kelas' => 'required',
+            'agama' => 'required',
+            'alamat' => 'required',
+        ]);
 
         //inset tabel user
         $user = new \App\User;
@@ -66,9 +62,15 @@ class StudentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        //
+        $student = \App\Student::find($id);
+        if($student->mapel()->where('mapel_id', $request->mapel)->exists()) {
+            return redirect('students/' . $id)->with('failed', 'Data mata pelajaran sudah ada');
+        }
+        $student->mapel()->attach($request->mapel, ['nilai' => $request->nilai]);
+
+        return redirect('students/' . $id)->with('status', 'Data nilai berhasil dimasukkan');
     }
 
     /**
@@ -79,7 +81,8 @@ class StudentsController extends Controller
      */
     public function show(Student $student)
     {
-        return view('students.show', ['student' => $student]);
+        $matapelajaran = \App\Mapel::all();
+        return view('students.show', ['student' => $student, 'matapelajaran' => $matapelajaran]);
     }
 
     /**
@@ -102,9 +105,14 @@ class StudentsController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        // dd($request->all());
         $request->validate([
-            'picture' => 'max:500'
+            'nama' => 'required',
+            'email' => 'required|email|unique:students',
+            'nis' => 'required|size:5|unique:students',
+            'kelas' => 'required',
+            'agama' => 'required',
+            'alamat' => 'required',
+            'picture' => 'max:1000|mimes:png,jpg,jpeg'
         ]);
         Student::where('id', $student->id)
                 ->update([

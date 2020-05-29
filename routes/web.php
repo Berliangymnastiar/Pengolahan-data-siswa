@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth', 'checkRole:admin']], function () {
     Route::resource('students', 'StudentsController')->middleware('auth');
     Route::post('/students{student}/update', 'StudentsController@update')->middleware('auth');
     Route::get('/students/{student}/delete', 'StudentsController@destroy')->middleware('auth');
+    Route::post('/students/{student}/addnilai', 'StudentsController@store');
 });
 
 Route::group(['middleware' => ['auth', 'checkRole:admin,siswa']], function () {

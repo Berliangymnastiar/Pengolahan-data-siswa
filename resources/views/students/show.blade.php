@@ -53,9 +53,30 @@
                     <!-- END LEFT COLUMN -->
                     <!-- RIGHT COLUMN -->
                     <div class="profile-right">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            Tambah data nilai
+                        </button>
+                        <div class="row mt-3">
+                            <div class="col-3">
+                                @if (session('failed'))
+                                <div class="alert alert-danger" role="alert">
+                                    {{session('failed')}}
+                                </div>
+                            @endif
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-3">
+                                    @if (session('status'))
+                                    <div class="alert alert-success" role="alert">
+                                        {{session('status')}}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
                         <div class="panel">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Mata Pelajaran</h3>
+                                <h1 class="panel-title">Mata Pelajaran</h1>
                             </div>
                             <div class="panel-body">
                                 <table class="table table-striped">
@@ -88,4 +109,41 @@
     </div>
     <!-- END MAIN CONTENT -->
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="/students/{{ $student->id }}/addnilai" class="d-inline" method="post" enctype="multipart/form-data">
+                @method('post')
+                @csrf
+                <div class="form-group">
+                    <label for="mapel">Mata Pelajaran</label>
+                    <select class="form-control" id="mapel" name="mapel">
+                      @foreach ($matapelajaran as $mp)
+                          <option value="{{ $mp->id }}">{{ $mp->nama }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                <div class="form-group {{ $errors->has('nama') ? 'has-error' : ''}}">
+                    <label for="nilai">nilai</label>
+                    <input type="text" class="form-control" id="nilai" name="nilai" value="{{ old('nilai') }}">
+                    @if($errors->has('nilai'))
+                        <span class="help-block">{{ $errors->first('nilai') }}</span>
+                    @endif
+                </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </form>
+        </div>
+      </div>
+    </div>
 @endsection
