@@ -82,7 +82,18 @@ class StudentsController extends Controller
     public function show(Student $student)
     {
         $matapelajaran = \App\Mapel::all();
-        return view('students.show', ['student' => $student, 'matapelajaran' => $matapelajaran]);
+
+        // Menyiapkan data untuk chart
+        $categories = [];
+        $data = [];
+
+        foreach ($matapelajaran as $mp) {
+            if($student->mapel()->wherePivot('mapel_id', $mp->id)->first()){
+                 $categories[] = $mp->nama;
+                $data[] = $student->mapel()->wherePivot('mapel_id',$mp->id)->first()->pivot->nilai;
+            } 
+        }
+        return view('students.show', ['student' => $student, 'matapelajaran' => $matapelajaran, 'categories' => $categories, 'data' => $data]);
     }
 
     /**
